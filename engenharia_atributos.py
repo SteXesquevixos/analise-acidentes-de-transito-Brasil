@@ -59,4 +59,5 @@ df_sorted['periodo_dia'] = df_sorted['data'].dt.hour.apply(periodo_dia)
 # Conversão da coluna 'id' de float para int
 df_sorted['id'] = df_sorted['id'].astype('int64')
 
+# Adição de colunas com as modificações realizadas acima
 df_sorted.to_csv('data/concat_data.csv', index=False)
