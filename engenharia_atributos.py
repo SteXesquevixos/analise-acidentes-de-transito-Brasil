@@ -1,12 +1,12 @@
+from operator import index
+
 import pandas as pd
-import numpy
-import glob
 import os.path
 
-#Ler ou criar arquivo concatenado
+# Ler ou criar arquivo concatenado
 
-if os.path.isfile("concat_data.csv"):
-    df = pd.read_csv("concat_data.csv")
+if os.path.isfile("data/concat_data.csv"):
+    df = pd.read_csv("data/concat_data.csv")
 else:
     df_all = []
     df_all.append(pd.read_csv("data/2021.csv",encoding="latin1", sep=";"))
@@ -14,10 +14,10 @@ else:
     df_all.append(pd.read_csv("data/2023.csv",encoding="latin1", sep=";"))
     df_all.append(pd.read_csv("data/2024.csv"))
     df = pd.concat(df_all)
-    df.to_csv("concat_data.csv", index=False)
+    df.to_csv("data/concat_data.csv", index=False)
 
 
-#Conversão de dados para os tipos especificos
+# Conversão de dados para os tipos especificos
 df = df.astype(str)
 for column in df:
     df_aux = df[column].str.replace(',', '.', regex=False)
@@ -56,3 +56,7 @@ def periodo_dia(hora):
 
 df_sorted['periodo_dia'] = df_sorted['data'].dt.hour.apply(periodo_dia)
 
+# Conversão da coluna 'id' de float para int
+df_sorted['id'] = df_sorted['id'].astype('int64')
+
+df_sorted.to_csv('data/concat_data.csv', index=False)
