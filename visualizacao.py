@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly
+import contextily as cx
+import geobr
+import matplotlib.pyplot as plt
 
-from analises import acidentes_transito_df_normalizado, acidentes_transito_df
+from analises import acidentes_transito_df_normalizado, acidentes_transito_df, acidentes_transito_df_copy
 
 ''' ------------------------------ Matriz de Correlação ---------------------------------------'''
 
@@ -96,6 +98,35 @@ plt.clf()
 
 
 ''' ---------------------- Distribuição geográfica dos acidentes --------------------------- '''
+
+# TODO: adicionar legenda e comentar o código
+
+# Carregar o mapa do Brasil de 2020
+br = geobr.read_country(year=2020)
+
+# Carregar o geodataframe
+gdf = geobr.read_country(year=2020)
+
+br.crs = "EPSG:4674"
+
+# Carregar os dados dos estados
+estados = geobr.read_state(year=2020)
+ax = br.plot(figsize=(10,10), alpha=0.5, edgecolor="#000000")
+cx.add_basemap(ax, crs=br.crs)
+estados.plot(ax=ax, alpha=0.7, edgecolor="blue", color="none")
+
+for _, row in estados.iterrows():
+    ax.text(row['geometry'].centroid.x, row['geometry'].centroid.y,
+            row['abbrev_state'], fontsize=9, ha='center', color='black')
+
+base = br.plot(ax=ax, color="gray", alpha=0.5, edgecolor="black")
+acidentes_transito_df_copy.plot(x='longitude', y='latitude', ax=base, marker='o', kind='scatter', colormap='viridis', colorbar=False, c='tipo_acidente')
+
+cx.add_basemap(ax, source=cx.providers.CartoDB.Positron, crs=br.crs)
+
+plt.tight_layout()
+plt.savefig('imagens/mapa.png')
+plt.clf()
 
 ''' ------------------Relação entre número de vítimas e condições do tempo ----------------- '''
 
