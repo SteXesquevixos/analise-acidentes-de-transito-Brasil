@@ -3,10 +3,10 @@ import numpy
 import glob
 import os.path
 import streamlit as st
-
+from operator import index
 
 def tratamento_df():
-#Ler ou criar arquivo concatenado
+    # Ler ou criar arquivo concatenado
 
     if os.path.isfile("concat_data.csv"):
         df = pd.read_csv("concat_data.csv")
@@ -17,10 +17,9 @@ def tratamento_df():
         df_all.append(pd.read_csv("data/2023.csv",encoding="latin1", sep=";"))
         df_all.append(pd.read_csv("data/2024.csv"))
         df = pd.concat(df_all)
-        df.to_csv("concat_data.csv", index=False)
 
 
-    #Conversão de dados para os tipos especificos
+    # Conversão de dados para os tipos especificos
     df = df.astype(str)
     for column in df:
         df_aux = df[column].str.replace(',', '.', regex=False)
@@ -59,5 +58,8 @@ def tratamento_df():
 
     df_sorted['periodo_dia'] = df_sorted['data'].dt.hour.apply(periodo_dia)
 
-    df_sorted['total_feridos'] = df_sorted['feridos_leves'] + df_sorted['feridos_graves']
-    return df_sorted
+    # Conversão da coluna 'id' de float para int
+    df_sorted['id'] = df_sorted['id'].astype('int64')
+
+    # Adição de colunas com as modificações realizadas acima
+    df_sorted.to_csv('concat_data.csv', index=False)
