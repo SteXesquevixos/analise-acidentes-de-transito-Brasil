@@ -10,7 +10,7 @@ def graficos(acidentes_transito_df_normalizado, acidentes_transito_df, acidentes
     plt.figure(figsize=(30,15))
     sns.heatmap(acidentes_transito_df_normalizado.corr(method='pearson'),annot=True)
     plt.tight_layout()
-    plt.savefig('imagens/heatmap.png')
+    plt.savefig('../imagens/heatmap.png')
     plt.clf()
 
 
@@ -51,7 +51,7 @@ def graficos(acidentes_transito_df_normalizado, acidentes_transito_df, acidentes
     ax.legend(title='Legenda', loc='upper left', bbox_to_anchor=(.54, 1))
 
     plt.tight_layout()
-    plt.savefig('imagens/causa_acidente.png')
+    plt.savefig('../imagens/causa_acidente.png')
     plt.clf()
 
 
@@ -92,7 +92,7 @@ def graficos(acidentes_transito_df_normalizado, acidentes_transito_df, acidentes
     ax.legend(title='Legenda', loc='upper left', bbox_to_anchor=(.73, 1))
 
     plt.tight_layout()
-    plt.savefig('imagens/tipos_acidente.png')
+    plt.savefig('../imagens/tipos_acidente.png')
     plt.clf()
 
 
@@ -124,7 +124,7 @@ def graficos(acidentes_transito_df_normalizado, acidentes_transito_df, acidentes
     cx.add_basemap(ax, source=cx.providers.CartoDB.Positron, crs=br.crs)
 
     plt.tight_layout()
-    plt.savefig('imagens/mapa.png')
+    plt.savefig('../imagens/mapa.png')
     plt.clf()
 
 ''' ------------------Relação entre número de vítimas e condições do tempo ----------------- '''

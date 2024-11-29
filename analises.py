@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 def analise():
     pd.set_option('display.max_columns', None)
-    acidentes_transito_df = pd.DataFrame(pd.read_csv('concat_data.csv'))
+    acidentes_transito_df = pd.DataFrame(pd.read_csv('../data/concat_data.csv'))
 
 
     shape = acidentes_transito_df.shape

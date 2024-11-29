@@ -8,17 +8,17 @@ from operator import index
 def tratamento_df():
     # Ler ou criar arquivo concatenado
 
-    if os.path.isfile("concat_data.csv"):
-        df = pd.read_csv("concat_data.csv")
+    if os.path.isfile("../data/concat_data.csv"):
+        df = pd.read_csv("../data/concat_data.csv")
     else:
         df_all = []
-        df_all.append(pd.read_csv("data/2021.csv",encoding="latin1", sep=";"))
-        df_all.append(pd.read_csv("data/2022.csv"))
-        df_all.append(pd.read_csv("data/2023.csv",encoding="latin1", sep=";"))
-        df_all.append(pd.read_csv("data/2024.csv"))
+        df_all.append(pd.read_csv("../data/2021.csv",encoding="latin1", sep=";"))
+        df_all.append(pd.read_csv("../data/2022.csv"))
+        df_all.append(pd.read_csv("../data/2023.csv",encoding="latin1", sep=";"))
+        df_all.append(pd.read_csv("../data/2024.csv"))
         df = pd.concat(df_all)
 
-
+    
     # Conversão de dados para os tipos especificos
     df = df.astype(str)
     for column in df:
@@ -26,9 +26,11 @@ def tratamento_df():
         df_aux= pd.to_numeric(df_aux, errors='coerce')
         if df_aux.any():
             df[column] = df_aux
-
+            
     df['data'] = pd.to_datetime(df['data_inversa'] + ' ' + df['horario'])
     df_sorted = df.sort_values(by='data')
+
+  
 
     #Tratamentos de valores NaN e duplicatas
     df_sorted = df_sorted.drop_duplicates()
@@ -38,6 +40,8 @@ def tratamento_df():
                 df_sorted[column].fillna(df[column].mode()[0], inplace=True)
             else:
                 df_sorted[column].fillna(df[column].mean(), inplace=True)
+
+    
 
 
     # Extração de informação do datatime
@@ -62,4 +66,5 @@ def tratamento_df():
     df_sorted['id'] = df_sorted['id'].astype('int64')
 
     # Adição de colunas com as modificações realizadas acima
-    df_sorted.to_csv('concat_data.csv', index=False)
+    df_sorted.to_csv('../data/concat_data.csv', index=False)
+    return df_sorted
